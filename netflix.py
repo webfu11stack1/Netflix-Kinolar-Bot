@@ -71,7 +71,7 @@ with sqlite3.connect('netflixkino.db') as conn:
 conn.commit()
 
 
-TOKEN = "7920193248:AAGy_RMbnzh_66DbxVIpCJRUYMFOGL2GBSE"
+TOKEN = ""
 bot = Bot(token=TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
