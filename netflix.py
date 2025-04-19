@@ -16,7 +16,7 @@ from aiogram.types import InputTextMessageContent
 from telegram import CallbackQuery, InlineQueryResultArticle
 
 
-conn = sqlite3.connect('netflixkino.db')
+conn = sqlite3.connect('kinovaqt_bot.db')
 cursor = conn.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS userid (
@@ -29,7 +29,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS userid_today (id INTEGER PRIMARY KE
 cursor.execute('''CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY, admin_id INTEGER , admin_name TEXT)''')
 
 def init_db():
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     # Create the movies table with necessary columns
@@ -51,7 +51,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS saved_movies (id INTEGER PRIMARY KE
 import sqlite3
 
 # Connect to the database
-with sqlite3.connect('netflixkino.db') as conn:
+with sqlite3.connect('kinovaqt_bot.db') as conn:
     cursor = conn.cursor()
 
     # Check if the download_count column exists
@@ -77,7 +77,7 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
 async def search_data(query):
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     # Qidiruvni bajarish
@@ -119,7 +119,7 @@ async def search_data(query):
 
 # Add movie to database
 def add_movie_to_db(name, description, video_file_id, movie_code, download_count=0):
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO movies (name, description, video_file_id, movie_code, download_count)
@@ -130,7 +130,7 @@ def add_movie_to_db(name, description, video_file_id, movie_code, download_count
 
 # Fetch movies from database
 def fetch_movies(query=None):
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     if query:
@@ -155,7 +155,7 @@ async def panel(message: types.Message, state: FSMContext):
 @dp.message_handler(commands=["panel"], state="*")
 async def panel(message: types.Message, state: FSMContext):
     mes_id = message.from_user.id
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     cursor.execute("SELECT admin_id FROM admins")
@@ -339,7 +339,7 @@ async def yesdel(calmes: types.CallbackQuery, state: FSMContext):
     dk = data.get("dk")  # Retrieve dk (movie_code) from the state
     
     if dk and dk.isdigit():
-        conn = sqlite3.connect("netflixkino.db")
+        conn = sqlite3.connect("kinovaqt_bot.db")
         cursor = conn.cursor()
 
         # Delete the movie record from the 'movies' table using the movie_code (dk)
@@ -599,7 +599,7 @@ async def admin_ism(message: types.Message, state: FSMContext):
 async def qoshish(query: types.CallbackQuery, state: FSMContext):
    
 
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
 
@@ -662,7 +662,7 @@ async def admin_ismm(message: types.Message, state: FSMContext):
 async def ocir(query: types.CallbackQuery, state: FSMContext):
    
 
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
 
@@ -682,7 +682,7 @@ async def ocir(query: types.CallbackQuery, state: FSMContext):
 #Adminlar
 @dp.message_handler(text="👤Adminlar", state="*")
 async def admins_list(message: types.Message, state: FSMContext):
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY, admin_id INTEGER , admin_name TEXT)''')
@@ -720,7 +720,7 @@ from datetime import datetime as dt
 #Statistika
 @dp.message_handler(text="📊Statistika", state="*")
 async def statistika(message: types.Message, state: FSMContext):
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     cursor.execute("SELECT COUNT(DISTINCT user_id) FROM userid")
@@ -784,7 +784,7 @@ async def kanal_url(message:types.Message,state:FSMContext):
     global kanal_urll;
     kanal_urll = message.text
     if  kanal_urll.startswith("https:"):
-        conn = sqlite3.connect('netflixkino.db')
+        conn = sqlite3.connect('kinovaqt_bot.db')
         cursor = conn.cursor()
     
         cursor.execute("INSERT INTO channel (channel_id, channel_url) VALUES (?, ?)", (kanal_idd, kanal_urll))
@@ -807,7 +807,7 @@ async def boshpanel(message:types.Message,state:FSMContext):
 
 @dp.message_handler(text="📢Kanallar",state="*")
 async def kanallar(message:types.Message,state:FSMContext):
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     cursor.execute("SELECT channel_url FROM channel")
@@ -865,7 +865,7 @@ async def kanal_urldel(message:types.Message,state:FSMContext):
     global kanal_urlldel;
     kanal_urlldel = message.text
     if  kanal_urlldel.startswith("https:"):
-        conn = sqlite3.connect('netflixkino.db')
+        conn = sqlite3.connect('kinovaqt_bot.db')
         cursor = conn.cursor()
         try:
             cursor.execute("DELETE FROM channel WHERE channel_id=? AND channel_url=?", (kanal_iddel,kanal_urlldel))
@@ -1176,7 +1176,7 @@ async def export_users_command(message: types.Message, state: FSMContext):
 @dp.message_handler(text='📑Baza', state="*")
 async def export_db_command(message: types.Message, state: FSMContext):
     # Bazaning asl faylini nusxalash
-    db_file_path = 'netflixkino.db'  # Bazangizning yo'li
+    db_file_path = 'kinovaqt_bot.db'  # Bazangizning yo'li
     backup_db_path = 'database_backup.db'  # Nusxasi saqlanadigan fayl nomi
 
     # Faylni nusxalash
@@ -1263,7 +1263,7 @@ async def start(message: types.Message, state: FSMContext):
     movie_name=None
 
     # Bazaga ulanish va foydalanuvchini tekshirish
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Foydalanuvchi bazada bormi yoki yo'qmi tekshirish
@@ -1340,7 +1340,7 @@ async def start(message: types.Message, state: FSMContext):
 
         # Yuklashlar sonini yangilash (bazaga)
         new_download_count = download_count + 1
-        with sqlite3.connect('netflixkino.db') as conn:
+        with sqlite3.connect('kinovaqt_bot.db') as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "UPDATE movies SET download_count = ? WHERE movie_code = ?",
@@ -1410,7 +1410,7 @@ async def start(message: types.Message, state: FSMContext):
 @dp.callback_query_handler(lambda c: c.data == "random",state="*")
 async def send_random_movie(callback_query: types.CallbackQuery):
     # Establish database connection and create cursor
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Select a random movie from the database
@@ -1489,7 +1489,7 @@ async def send_random_movie(callback_query: types.CallbackQuery):
 @dp.callback_query_handler(lambda c: c.data == "rand2",state="*")
 async def send_random_movie(callback_query: types.CallbackQuery):
     # Establish database connection and create cursor
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Select a random movie from the database
@@ -1794,7 +1794,7 @@ async def already_responded(callback_query: types.CallbackQuery):
 # 
     
 async def export_users():
-    conn = sqlite3.connect('netflixkino.db')
+    conn = sqlite3.connect('kinovaqt_bot.db')
     cursor = conn.cursor()
 
     cursor.execute('SELECT user_id FROM userid')
@@ -1823,7 +1823,7 @@ async def check_movie_code(msg: Message, state: FSMContext):
     movie_code = msg.text
 
     # Bazaga ulanish
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Kanal obunalarini tekshirish
@@ -1860,7 +1860,7 @@ async def check_movie_code(msg: Message, state: FSMContext):
         return  # Davom ettirmaslik
 
     # Kino ma'lumotlarini bazadan olish
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT name, description, video_file_id, download_count FROM movies WHERE movie_code = ?", (movie_code,))
         movie_data = cursor.fetchone()
@@ -1878,7 +1878,7 @@ async def check_movie_code(msg: Message, state: FSMContext):
     try:
         # Yuklab olish hisobini yangilash (bazada)
         new_download_count = download_count + 1
-        with sqlite3.connect('netflixkino.db') as conn:
+        with sqlite3.connect('kinovaqt_bot.db') as conn:
             cursor = conn.cursor()
             cursor.execute("UPDATE movies SET download_count = ? WHERE movie_code = ?", (new_download_count, movie_code))
             conn.commit()
@@ -1933,7 +1933,7 @@ async def show_top_movies(callback_query: types.CallbackQuery):
         ],row_width=2
     )
 
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Eng ko'p yuklangan 10 ta kinoni olish
@@ -2011,7 +2011,7 @@ async def send_movie_from_top(callback_query: types.CallbackQuery):
             row_width=2
         )
 
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Kino ma'lumotlarini olish
@@ -2026,7 +2026,7 @@ async def send_movie_from_top(callback_query: types.CallbackQuery):
 
     # Yuklashlar sonini yangilash
     new_download_count = download_count + 1
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
         cursor.execute("UPDATE movies SET download_count = ? WHERE movie_code = ?", (new_download_count, movie_code))
         conn.commit()
@@ -2053,7 +2053,7 @@ async def save_movie(callback_query: types.CallbackQuery):
     # Callback data'dan movie_code ni olish
     movie_code = callback_query.data.split(":")[1]  # "save_movie:<movie_code>" dan movie_code ni ajratib olish
 
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Kino allaqachon saqlanganligini tekshirish
@@ -2086,7 +2086,7 @@ async def show_saved_movies(callback_query: types.CallbackQuery):
         ],row_width=2
     )
     # Fetch saved movies for the user
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
         cursor.execute(
             "SELECT m.name, m.description, m.video_file_id, m.movie_code "
@@ -2163,7 +2163,7 @@ async def send_selected_movie(callback_query: types.CallbackQuery):
     )
 
     # Fetch movie details from the database
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT name, description, video_file_id, download_count FROM movies WHERE movie_code = ?", (movie_code,))
         movie_data = cursor.fetchone()
@@ -2181,7 +2181,7 @@ async def send_selected_movie(callback_query: types.CallbackQuery):
     description = description or "Tavsif mavjud emas."
 
     # Update download count (increase by 1)
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
         cursor.execute("UPDATE movies SET download_count = download_count + 1 WHERE movie_code = ?", (movie_code,))
         conn.commit()
@@ -2209,7 +2209,7 @@ async def clear_saved_movies(callback_query: types.CallbackQuery):
     )
     user_id = callback_query.from_user.id
 
-    with sqlite3.connect('netflixkino.db') as conn:
+    with sqlite3.connect('kinovaqt_bot.db') as conn:
         cursor = conn.cursor()
 
         # Foydalanuvchining barcha saqlangan kinolarini o'chirish
