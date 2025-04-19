@@ -282,7 +282,7 @@ async def inline_query_handler(query: types.InlineQuery):
                     reply_markup=InlineKeyboardMarkup().add(
                         InlineKeyboardButton(
                             "📽 Kinoni ko'rish",
-                            url=f"https://t.me/netflix_kinolarbot?start={result['movie_code']}"
+                            url=f"https://t.me/kinovaqt_bot?start={result['movie_code']}"
                         )
                     )
                 )
@@ -1325,7 +1325,7 @@ async def start(message: types.Message, state: FSMContext):
         for _, channel_url in channels:
             keyboard.add(InlineKeyboardButton(text="➕ Obuna bo'lish 5", url=channel_url))  
         
-        keyboard.add(InlineKeyboardButton(text="Tekshirish ✅", url="https://t.me/netflix_kinolarbot?start=True" ))
+        keyboard.add(InlineKeyboardButton(text="Tekshirish ✅", url="https://t.me/kinovaqt_bot?start=True" ))
         
         await message.reply(
             "``` Botdan foydalanish uchun quyidagi kanallarga obuna bo'ling:```⬇️",
@@ -1658,7 +1658,7 @@ async def handle_suggestion(message: types.Message, state: FSMContext):
             keyboard.add(
                 InlineKeyboardButton(
                     text="🎥 Kino ko'rish", 
-                    url=f"https://t.me/netflix_kinolarbot?start={movie_code}"
+                    url=f"https://t.me/kinovaqt_bot?start={movie_code}"
                 )
             )
             
@@ -1689,7 +1689,7 @@ async def handle_suggestion(message: types.Message, state: FSMContext):
             # Agar kod topilmasa, admin ko'rib chiqadi
             botga = InlineKeyboardMarkup(
                 inline_keyboard=[
-                    [InlineKeyboardButton(text="🔙 Botga o'tish", url="https://t.me/netflix_kinolarbot"),
+                    [InlineKeyboardButton(text="🔙 Botga o'tish", url="https://t.me/kinovaqt_bot"),
                      InlineKeyboardButton(text="Javob yozish", url=f"tg://user?id={user_id}")]
                 ],
                 row_width=2
@@ -1751,7 +1751,7 @@ async def send_auto_response(callback_query: types.CallbackQuery):
             keyboard.add(
                 InlineKeyboardButton(
                     text="🎥 Kino ko'rish", 
-                    url=f"https://t.me/netflix_kinolarbot?start={movie_code}"
+                    url=f"https://t.me/kinovaqt_bot?start={movie_code}"
                 )
             )
         else:
@@ -1849,7 +1849,7 @@ async def check_movie_code(msg: Message, state: FSMContext):
         for _, channel_url in channels:
             keyboard.add(InlineKeyboardButton(text="➕ Obuna bo'lish 5", url=channel_url))  
         
-        keyboard.add(InlineKeyboardButton(text="Tekshirish ✅", url="https://t.me/netflix_kinolarbot?start=True" ))
+        keyboard.add(InlineKeyboardButton(text="Tekshirish ✅", url="https://t.me/kinovaqt_bot?start=True" ))
 
         await msg.reply(
             "``` Botdan foydalanish uchun quyidagi kanallarga obuna bo'ling:```⬇️",
